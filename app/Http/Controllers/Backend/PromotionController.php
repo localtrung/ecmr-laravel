@@ -39,7 +39,6 @@ class PromotionController extends Controller
     public function index(Request $request){
         $this->authorize('modules', 'promotion.index');
         $promotions = $this->promotionService->paginate($request);
-      
         $config = [
             'js' => [
                 'backend/js/plugins/switchery/switchery.js',
@@ -61,7 +60,8 @@ class PromotionController extends Controller
     }
 
     public function create(){
-        $this->authorize('modules', 'promotion.create');
+        $this->authorize('modules','promotion.create');
+        $promotions = $this->promotionRepository->all();
         $sources = $this->sourceRepository->all();
         $config = $this->config();
         $config['seo'] =__('messages.promotion');
@@ -70,10 +70,10 @@ class PromotionController extends Controller
         return view('backend.dashboard.layout', compact(
             'template',
             'config',
+            'promotions',
             'sources'
         ));
     }
-
     public function store(StorePromotionRequest $request){
         if($this->promotionService->create($request, $this->language)){
             return redirect()->route('promotion.index')->with('success','Thêm mới bản ghi thành công');
@@ -84,13 +84,7 @@ class PromotionController extends Controller
     public function edit($id){
         $this->authorize('modules', 'promotion.update');
         $promotion = $this->promotionRepository->findById($id);
-        $promotion->description = $promotion->description[$this->language]; 
-        $modelClass = loadClass($promotion->model, 'Repository');
-        $promotionItem = convertArrayByKey($modelClass->findByCondition(
-            ...array_values($this->menuItemAgrument($promotion->model_id))
- 
-         ), ['id', 'name.languages', 'image']);    
-         
+        $sources = $this->sourceRepository->all();
         $config = $this->config();
         $config['seo'] =__('messages.promotion');
         $config['method'] = 'edit';
@@ -99,7 +93,7 @@ class PromotionController extends Controller
             'template',
             'config',
             'promotion',
-            'promotionItem',
+            'sources',
         ));
     }
 
@@ -124,9 +118,9 @@ class PromotionController extends Controller
 
     public function destroy($id){
         if($this->promotionService->destroy($id)){
-            return redirect()->route('widget.index')->with('success','Xóa bản ghi thành công');
+            return redirect()->route('promotion.index')->with('success','Xóa bản ghi thành công');
         }
-        return redirect()->route('widget.index')->with('error','Xóa bản ghi không thành công. Hãy thử lại');
+        return redirect()->route('promotion.index')->with('error','Xóa bản ghi không thành công. Hãy thử lại');
     }
 
     private function menuItemAgrument (array $whereIn = []) {

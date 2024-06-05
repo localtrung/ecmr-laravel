@@ -31,7 +31,7 @@
          $variantCatalogue = old('attributeCatalogue', (isset($product->attributeCatalogue) ? json_decode($product->attributeCatalogue, TRUE) : [] ));    
         @endphp
 
-        <div class="variant-wrapper  {{ (count($variantCatalogue)) ? '' : 'hidden' }}">
+        <div class="variant-wrapper  {{ isset($variantCatalogue) && (count($variantCatalogue)) ? '' : 'hidden' }}">
             <div class="row variant-container">
                 <div class="col-lg-3">
                     <div class="attribute-title">Chọn thuộc tính</div>
@@ -86,6 +86,7 @@
     </div>
 </div>
 
+{{-- @dd($product->attribute) --}}
 
 
 <script>
@@ -98,7 +99,7 @@
 
     })->values());
 
-    var attribute = '{{ base64_encode(json_encode(old('attribute' ?? (isset($product -> attribute) ? json_decode($product -> attribute, TRUE) : [])))) }}'
-    var variant = '{{ base64_encode(json_encode(old('variant' ?? (isset($product -> variant) ? json_decode($product -> variant, TRUE) : [])))) }}'
+    var attribute = '{{ base64_encode(json_encode(old('attribute') ?? (isset($product->attribute) ? $product->attribute : []))) }}';
+    var variant = '{{ base64_encode(json_encode(old('variant') ?? (isset($product->variant) ? json_decode($product->variant, TRUE) : []))) }}';
 
 </script>

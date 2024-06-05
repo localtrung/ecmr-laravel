@@ -12,14 +12,12 @@ return new class extends Migration {
     {
         Schema::create('promotions', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
+            $table->string('name');
             $table->string('code', 20);
             $table->text('description')->nullable();
             $table->string('method');
-            $table->json('module_type')->nullable();
-            $table->json('discount Information')->nullable();
-            $table->json(' applySource')->nullable();
-            $table->integer('neverEndDate')->nullable();
+            $table->json('discountInformation')->nullable();
+            $table->string('neverEndDate')->nullable();
             $table->timestamp('startDate');
             $table->timestamp('endDate');
             $table->tinyInteger('publish')->default(1);

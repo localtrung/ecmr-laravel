@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\FrontendController;
-use App\Repositories\Interfaces\SlideRepositoryInterface  as SlideRepository;
-use App\Services\Interfaces\WidgetServiceInterface  as WidgetService;
+use App\Repositories\Interfaces\SlideRepositoryInterface as SlideRepository;
+use App\Services\Interfaces\WidgetServiceInterface as WidgetService;
+use App\Services\Interfaces\SlideServiceInterface as SlideService;
+use App\Enums\SlideEnum;
 
 
 use Illuminate\Http\Request;
@@ -16,40 +18,47 @@ class HomeController extends FrontendController
 
     protected $systemRepository;
     protected $widgetService;
-    public function __construct( 
+    protected $slideService;
+    public function __construct(
         SlideRepository $slideRepository,
         WidgetService $widgetService,
+        SlideService $slideService,
 
-        ){
+    ) {
         $this->slideRepository = $slideRepository;
         $this->widgetService = $widgetService;
+        $this->slideService = $slideService;
 
         parent::__construct();
     }
 
-    public function index(){
+    public function index()
+    {
 
-        $widget = [
-            'category' => $this->widgetService->findWidgetByKeyword('category', $this->language, ['children' => true ])
-        ];
-        $slides = $this->slideRepository->findByCondition(...$this->slideAgrument());
-        $slides-> slideItems = $slides->item[$this->language];
+        $widgets = $this->widgetService->getWidget(
+            [
+              
+                ['keyword' => 'category-high'],
+                ['keyword' => 'category-home', 'children' => true,'promotion' => true],
+                ['keyword' => 'category', 'children' => true, 'countObject' => true],
+                ['keyword' => 'Best_Seler'],
+            ],
+            $this->language
+        );
+        $slides = $this->slideService->getSlide([SlideEnum::BANNER, SlideEnum::MAIN_SLIDE], $this->language);
+        $language = $this -> language;
         $config = $this->config();
         return view('frontend.homepage.home.index', compact(
             'config',
             'slides',
-        ));
+            'widgets',
+            'language',
+        )
+        );
     }
 
-    private function slideAgrument(){
-        return [
-            'condition' =>[
-                config('apps.general.defaultPublish'),
-                ['keyword', '=', 'slide-index']
-            ]
-            ];
-    }
-    private function config(){
+    private function config()
+    {
         return [];
     }
 

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\BaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use App\Models\Base;
 
 /**
@@ -168,6 +169,56 @@ class BaseRepository implements BaseRepositoryInterface
             })->get();
     }
 
+    public function recursiveCategory(string $parameter = '', $table = '' ){
+        $table = $table.'_catalogues';
+        $query = "
+            WITH RECURSIVE category_tree AS (
+                SELECT id, parent_id, deleted_at
+                FROM $table
+                WHERE id IN (?)
+                UNION ALL 
+                SELECT c.id, c.parent_id, c.deleted_at
+                FROM $table as c
+                JOIN category_tree AS ct ON ct.id = c.parent_id
+            )
+
+            SELECT id FROM category_tree WHERE deleted_at IS NULL
+        ";
+
+        $result = DB::select($query, [$parameter]);
+        return $result;
+    }
+
+    public function findObjectByCategoryIds($catId = [], $model, $language){
+        $query = $this->model->newQuery();
+        $this -> model->select(
+            $model.'s.*',
+        )
+        ->where(
+            [config('apps.general.defaultPublish')]
+        )
+        ->with('languages', function($query) use ($language)
+        {
+            $query->where('language_id', $language);
+        })
+        ->with($model.'_catalogues',function($query) use ($language)
+        {
+            $query->with('languages',function($query) use ($language){
+                $query->where('language_id', $language);
+            });
+        });
+        if($model == 'product')
+        {
+            $query->with('product_variants');
+        }
+        $query->join($model.'_catalogue_'.$model.' as tb2', 'tb2.'.$model.'_id', '=', $model.'s.id')
+        ->whereIn('tb2.'.$model.'_catalogue_id', $catId)
+        ->orderBy('order','desc')
+        ->limit(8)
+        ->get()
+        ;
+        return $query->get();
+    }
 
 
 

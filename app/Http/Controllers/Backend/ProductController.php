@@ -103,7 +103,6 @@ class ProductController extends Controller
         $product = $this->productRepository->getProductById($id, $this->language);
         $attributeCatalogue = $this->attributeCatalogue->getAll($this->language);
         $config = $this->configData();
-        $config = $this->configData();
         $config['seo'] = __('messages.product');
         $config['method'] = 'edit';
         $dropdown  = $this->nestedset->Dropdown();

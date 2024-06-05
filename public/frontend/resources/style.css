@@ -1403,7 +1403,7 @@ html:not(.uk-touch) .uk-nav-offcanvas ul a:hover,
     border-radius: 10px;
 }
 .category-item .image{
-    margin-bottom:10px;
+    margin-bottom:10px; 
     height:100px;
 }
 .category-item .title{

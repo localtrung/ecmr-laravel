@@ -311,7 +311,6 @@
         $(document).on('change', '.promotionMethod', function () {
             let _this = $(this)
             let option = _this.val()
-            console.log(option)
             switch (option) {
                 case "order_amount_range":
                     HT.renderOrderAmountRange()
@@ -332,7 +331,6 @@
 
         let method = $('.preload_promotionMethod').val()
         if (method.length && typeof method !== 'undefined') {
-            console.log(123);
             $('.promotionMethod').val(method).trigger('change')
         }
     }
@@ -736,18 +734,15 @@
 
         let preloadObject = JSON.parse($('.input_object').val()) || {
             id: [],
-            product_variant_id: [],
+            // product_variant_id: [],
             name: [],
             variant_uuid: [],
         }
-
-        console.log(preloadObject);
-
         let objectArray = []
         if (preloadObject.id && preloadObject.id.length > 0) {
             objectArray = preloadObject.id.map((id, index) => ({
                 product_id: id || 'null',
-                product_variant_id: preloadObject.product_variant_id[index] || 'null',
+                // product_variant_id: preloadObject.product_variant_id[index] || 'null',
                 name: preloadObject.name[index] || 'null',
                 uuid: preloadObject.variant_uuid[index] || 'null',
             }))

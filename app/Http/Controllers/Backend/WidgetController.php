@@ -98,7 +98,7 @@ class WidgetController extends Controller
         ));
     }
 
-    public function update($id, UpdateUserRequest $request){
+    public function update($id, UpdateWidgetRequest $request){
         if($this->widgetService->update($id, $request, $this->language)){
             return redirect()->route('widget.index')->with('success','Cập nhật bản ghi thành công');
         }

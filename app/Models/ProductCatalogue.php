@@ -63,6 +63,10 @@ class ProductCatalogue extends Model
         
     }
 
+    public function getNameByLanguage($id, $language){
+        
+    }
+
 
 
 }

@@ -5,7 +5,7 @@ return [
         'PostCatalogue' => 'Nhóm vài viết',
         'Post' => 'Bài viết',
         'ProductCatalogue' => 'Nhóm sản phẩm',
-        'produc' => 'Sản phẩm',
+        'product' => 'Sản phẩm',
     ],
     'type' => [
         'dropdown-menu' => 'Dropdown Menu',

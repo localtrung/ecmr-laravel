@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\promotion;
 
+use App\Enums\PromotionEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use app\Rules\OrderAmountRangeRule;
+use App\Rules\promotion\OrderAmountRangeRule;
+use App\Rules\promotion\ProductAndQuantityRule;
 
 
 class StorePromotionRequest extends FormRequest
@@ -25,7 +27,7 @@ class StorePromotionRequest extends FormRequest
     {
         $rules = [
             'name' => 'required',
-            'code' => 'required|unique: promotions',
+            'code' => 'required|unique:promotions',
             'startDate' => 'required|custom_date_format',
         ];
         $date = $this->only('startDate', 'endDate');
@@ -35,15 +37,16 @@ class StorePromotionRequest extends FormRequest
 
         $method = $this->input('method');
         switch ($method) {
-            case 'order amount_range':
+            case PromotionEnum::ORDER_AMOUNT_RANGE:
                 $rules['method'] = [new OrderAmountRangeRule($this->input('promotion_order_amount_range'))];
                 break;
-            case 'product_and_quantity':
-                $rules['method'] = 'custom_paq_method order_amount_range_rule';
+            case PromotionEnum::PRODUCT_AND_QUANTITY:
+                $rules['method'] = [new ProductAndQuantityRule($this->only('product_and_quantity', 'object'))];
                 break;
+            default:
+                $rules['method'] = 'required|not_in:none';
+            break;
         }
-
-
         return $rules;
     }
 
@@ -58,6 +61,11 @@ class StorePromotionRequest extends FormRequest
             'endDate.custom_date_format' => 'Bạn chưa nhập vào ngày kết thúc khuyến mại',
             'code.unique' => 'Mã khuyến mại đã tồn tại',
         ];
+        $method = $this->input('method');
+        if($method === 'none')
+        {
+            $messages['method.not_in'] = 'Bạn chưa chọn hình thức khuyến mại';
+        }
 
         if (!$this->input('neverEndDate')) {
             $messages['endDate.required'] = 'Bạn chưa chọn ngày kết thúc khuyến mãi';

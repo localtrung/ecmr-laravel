@@ -52,7 +52,7 @@
                 <div class="uk-flex uk-flex-middle">
                     <div class="logo">
                         <a href="" class="logo-image">
-                            <img src="https://themepanthers.com/wp/nest/d1/wp-content/uploads/2022/02/logo.png" alt="">
+                            <img src="{{ $system['homepage_logo'] }}" alt="">
                         </a>
                     </div>
                     <div class="header-form">

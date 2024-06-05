@@ -561,6 +561,9 @@ a {
 .text-bold {
     font-weight: bold;
 }
+.text-small{
+    font-size: 10px;
+}
 
 .menuContainer .select2-container {
     width: 100% !important;

@@ -8,10 +8,10 @@ $url = ($config['method'] == 'create') ? route('promotion.store') : route('promo
     <div class="wrapper wrapper-content animated fadeInRight promotion-wrapper">
         <div class="row">
             <div class="col-lg-8">
-                @include('backend.promotion.component.general', ['model' =>( $promotion) ?? null])
+                @include('backend.promotion.component.general', ['model' =>($promotion) ?? null])
                 @include('backend.promotion.promotion.component.detail')
             </div>
-           @include('backend.promotion.component.aside', ['model' =>( $promotion) ?? null])
+           @include('backend.promotion.component.aside', ['model' =>($promotion) ?? null])
         </div>
 
         <div class="text-right mb15">
@@ -23,7 +23,7 @@ $url = ($config['method'] == 'create') ? route('promotion.store') : route('promo
 
 
 <input type="hidden" class="preload_promotionMethod" value="{{ old('method', ($promotion->method) ?? null) }}">
-<input type="hidden" class="preload_select-product-and-quantity" value="{{ old('module_type', ($promotion->metmodule_typehod) ?? null) }}">
-<input type="hidden" class="input_order_amount_range" value="{{ json_encode(old('promotion_order_amount_range'))}}">
-<input type="hidden" class="input_product_and_quantity" value="{{ json_encode(old('product_and_quantity'))}}">
-<input type="hidden" class="input_object" value="{{ json_encode(old('object'))}}">
+<input type="hidden" class="preload_select-product-and-quantity" value="{{ old('module_type', ($promotion->discountInformation['info']['model']) ?? null) }}">
+<input type="hidden" class="input_order_amount_range" value="{{ json_encode(old('promotion_order_amount_range',($promotion->discountInformation['info']) ?? null)) }}">
+<input type="hidden" class="input_product_and_quantity" value="{{ json_encode(old('product_and_quantity', ($promotion->discountInformation['info']) ?? null)) }}">
+<input type="hidden" class="input_object" value="{{ json_encode(old('object', ($promotion->discountInformation['object']) ?? null)) }}">

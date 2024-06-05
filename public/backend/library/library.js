@@ -185,11 +185,13 @@
     }
 
     HT.setupDatePicker = () => {
-        $('.datepicker').datetimepicker({
-           timepicker:true,
-            format:'d/m/Y H:i',
-            minDate: new Date()
-        });
+       if($('.datepicker').length){
+            $('.datepicker').datetimepicker({
+                timepicker:true,
+                format:'d/m/Y H:i',
+                minDate: new Date()
+            });
+       }
     }
 
     

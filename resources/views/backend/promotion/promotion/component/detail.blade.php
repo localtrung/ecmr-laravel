@@ -6,7 +6,7 @@
         <div class="form-row">
             <div class="fix-label" for="">Chọn hình thức khuyến mại</div>
             <select name="method" class="setupSelect2 promotionMethod" id="">
-                <option value="">[Chọn hình thức khuyến mại]</option>
+                <option value="none">[Chọn hình thức khuyến mại]</option>
                 @foreach (__('module.promotion') as $key => $val)
                 <option value="{{ $key }}">{{ $val }}</option>
                 @endforeach

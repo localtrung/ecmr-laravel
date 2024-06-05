@@ -13,7 +13,8 @@ $url = ($config['method'] == 'create') ? route('widget.store') : route('widget.u
                         <h5>thông tin widget</h5>
                     </div>
                     <div class="ibox-content custom-content">
-                        @include('backend.dashboard.component.content', ['offTitle' => true, 'offContent' => true, 'model' => ($widget) ?? null])
+                        @include('backend.dashboard.component.content', ['offTitle' => true, 'offContent' => true,
+                        'model' => ($widget) ?? null])
                     </div>
                 </div>
                 @include('backend.dashboard.component.album', ['model' => ($widget) ?? null])
@@ -25,13 +26,8 @@ $url = ($config['method'] == 'create') ? route('widget.store') : route('widget.u
                         <div class="labelText">Chọn Module</div>
                         @foreach (__('module.model') as $key => $val)
                         <div class="model-item uk-flex uk-flex-middle">
-                            <input 
-                                type="radio" 
-                                name="model" 
-                                class="input-radio" 
-                                id="{{ $key }}" 
-                                value="{{ $key }}" 
-                                {{ (old('model', ($widget->model) ?? null) == $key) ? 'checked' : '' }}>
+                            <input type="radio" name="model" class="input-radio" id="{{ $key }}" value="{{ $key }}" {{
+                                (old('model', ($widget->model) ?? null) == $key) ? 'checked' : '' }}>
                             <label for="{{ $key }}">{{ $val }}</label>
                         </div>
                         @endforeach
@@ -44,7 +40,7 @@ $url = ($config['method'] == 'create') ? route('widget.store') : route('widget.u
                             </div>
                         </div>
                         @php
-                            $modelItem = old('modelItem', ($widgetItem) ?? null);
+                        $modelItem = old('modelItem', ($widgetItem) ?? null);
                         @endphp
                         <div class="search-model-result">
                             @if(!is_null($modelItem) && count($modelItem) )
@@ -59,8 +55,10 @@ $url = ($config['method'] == 'create') ? route('widget.store') : route('widget.u
                                     </div>
                                     <div class="hidden">
                                         <input type="text" name="modelItem[id][]" value="{{ $val }}">
-                                        <input type="text" name="modelItem[name][]" value="{{ $modelItem['name'][$key] }}">
-                                        <input type="text" name="modelItem[image][]" value="{{ $modelItem['image'][$key] }}">
+                                        <input type="text" name="modelItem[name][]"
+                                            value="{{ $modelItem['name'][$key] }}">
+                                        <input type="text" name="modelItem[image][]"
+                                            value="{{ $modelItem['image'][$key] }}">
                                     </div>
                                     <div class="deleted">
                                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20"

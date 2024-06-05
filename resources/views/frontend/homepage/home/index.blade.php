@@ -4,126 +4,157 @@
     @include('frontend.component.slide')
     <div class="panel-category page-setup">
         <div class="uk-container uk-container-center">
+            @if(!is_null($widgets['category-high']))
             <div class="panel-head">
                 <div class="uk-flex uk-flex-middle">
                     <h2 class="heading-1"><span>Danh mục sản phẩm</span></h2>
-                    <div class="category-children">
-                        <ul class="uk-list uk-clearfix uk-flex uk-flex-middle">
-                            <li class=""><a href="" title="">Bánh & Sữa</a></li>
-                            <li class=""><a href="" title="">Cà phê & Trà</a></li>
-                            <li class=""><a href="" title="">Thức ăn cho vật nuôi</a></li>
-                            <li class=""><a href="" title="">Rau củ</a></li>
-                            <li class=""><a href="" title="">Hoa Quả</a></li>
-                        </ul>
-                    </div>
+                    @include('frontend.component.catalogue', ['category' => $widgets['category-high']])
                 </div>
             </div>
+            @endif
+            @if(!is_null($widgets['category']))
             <div class="panel-body">
-                <?php $category = ['Cake & Milk','Oganic Kiwi','Peach','Read Apple','Snacks','Vegetables','Strawbery','Black plum','Custard apple','Coffe & Tea','Headphone','Kiwi','Iphone']  ?>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
-                        <?php for($i = 0; $i < count($category); $i++){  ?>
+                        @foreach ($widgets['category']-> object as $key => $val)
+                        @php
+                        $name = $val->languages->first()->pivot->name;
+                        $canonical = write_url($val->languages->first()->pivot->canonical);
+                        $image = $val->image;
+                        $productCount = ($val->products_count) ?? 0;
+                        @endphp
                         <div class="swiper-slide">
-                           <div class="category-item bg-<?php echo rand(1,7) ?>">
-                                <a href="" class="image img-scaledown img-zoomin"><img src="frontend/resources/img/cat-<?php echo $i + 1; ?>.png" alt=""></a>
-                                <div class="title"><a href="" title=""><?php echo $category[$i] ?></a></div>
-                                <div class="total-product"><?php echo rand(0, 100) ?> sản phẩm</div>
-                           </div>
+                            <div class="category-item bg-<?php echo rand(1,7) ?>">
+                                <a href="{{ $image }}" class="image img-scaledown img-zoomin"><img src="{{ $image }}"
+                                        alt="{{ $name }}"></a>
+                                <div class="title"><a href="{{ $canonical }}" title="{{ $name }}">{{ $name }}</a></div>
+                                <div class="total-product">{{ $productCount }} sản phẩm</div>
+                            </div>
                         </div>
-                        <?php }  ?>
+                        @endforeach
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </div>
+    @php
+    $banner = App\Enums\SlideEnum::BANNER;
+    @endphp
+    @if(count($slides[$banner]['item']))
     <div class="panel-banner">
         <div class="uk-container uk-container-center">
             <div class="panel-body">
                 <div class="uk-grid uk-grid-medium">
-                    <?php for($i = 1; $i<= 3; $i++){  ?>
+                    @foreach($slides[$banner]['item'] as $key => $val)
+                    @php
+                    $name = $val['description'];
+                    $image = $val['image'];
+                    $canonical = write_url($val['canonical'], true, true);
+                    @endphp
                     <div class="uk-width-large-1-3">
                         <div class="banner-item">
-                            <span class="image"><img src="frontend/resources/img/banner-<?php echo $i; ?>.png" alt=""></span>
+                            <span class="image"><img src="{!! $image !!}" alt="{!! $name !!}"></span>
                             <div class="banner-overlay">
-                                <div class="banner-title">Make your Breakfast healthy and Easy</div>
-                                <a class="btn-shop" title="">Mua ngay</a>
+                                <div class="banner-title">{!! $name !!}</div>
+                                <a class="btn-shop" href="{!! $canonical !!}" title="{!! $name !!}">Mua ngay</a>
                             </div>
                         </div>
                     </div>
-                    <?php }  ?>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
+    @endif
+    @if(!is_null($widgets['category-home']))
+    @foreach($widgets['category-home']-> object as $category )
+    @php
+        $catName = $category->languages->first()->pivot->name;
+        $catCanonical = write_url($category->languages->first()->pivot->canonical, true, true);
+        $childrens = ($category->childrens) ?? null;
+    @endphp
     <div class="panel-popular">
         <div class="uk-container uk-container-center">
             <div class="panel-head">
                 <div class="uk-flex uk-flex-middle uk-flex-space-between">
-                    <h2 class="heading-1"><span>Sản phẩm nổi bật</span></h2>
+                    <h2 class="heading-1"><a href="{!! $catCanonical !!}" title="{{ $catName }}">{{ $catName }}</a></h2>
+                    @if(!is_null($childrens))
                     <div class="category-children">
                         <ul class="uk-list uk-clearfix uk-flex uk-flex-middle">
-                            <li class=""><a href="" title="">Tất cả</a></li>
-                            <li class=""><a href="" title="">Bánh & Sữa</a></li>
-                            <li class=""><a href="" title="">Cà phê & Trà</a></li>
-                            <li class=""><a href="" title="">Thức ăn cho vật nuôi</a></li>
-                            <li class=""><a href="" title="">Rau củ</a></li>
-                            <li class=""><a href="" title="">Hoa Quả</a></li>
+                            <li class=""><a href="{!! $catCanonical !!}" title="{{ $catName }}">Tất cả</a></li>
+                            @foreach($childrens as $children)
+                            @php
+                            $chilName = $children->languages->first()->pivot->name;
+                            $chilCanonical = write_url($children->languages->first()->pivot->canonical, true, true);
+                            @endphp
+                            <li class=""><a href="{!! $chilCanonical !!}" title="{{ $chilName }}">{{ $chilName }}</a>
+                            </li>
+                            @endforeach
                         </ul>
                     </div>
+                    @endif
                 </div>
             </div>
+            @if(isset($category->products) && count($category->products))
             <div class="panel-body">
                 <div class="uk-grid uk-grid-medium">
-                    <?php for($i = 0; $i<=14; $i++){  ?>
+
+                    @foreach($category->products as $product)
                     <div class="uk-width-large-1-5 mb20">
-                        @include('frontend.component.product')
+                        @include('frontend.component.product-item', ['products ' => $product])
                     </div>
-                    <?php }  ?>
+                    @endforeach
+
                 </div>
             </div>
+            @endif
         </div>
     </div>
+    @endforeach
+    @endif
+    @php
+        $name = $widgets['Best_Seler']->name;
+        $image = ($widgets['Best_Seler']->album[0]) ?? '' ;
+        $description = $widgets['Best_Seler']->description[$language];
+    @endphp
     <div class="panel-bestseller">
         <div class="uk-container uk-container-center">
             <div class="panel-head">
                 <div class="uk-flex uk-flex-middle uk-flex-space-between">
-                    <h2 class="heading-1"><span>Sản phẩm bán chạy</span></h2>
-                    <div class="category-children">
-                        <ul class="uk-list uk-clearfix uk-flex uk-flex-middle">
-                            <li class=""><a href="" title="">Tất cả</a></li>
-                            <li class=""><a href="" title="">Bánh & Sữa</a></li>
-                            <li class=""><a href="" title="">Cà phê & Trà</a></li>
-                            <li class=""><a href="" title="">Thức ăn cho vật nuôi</a></li>
-                            <li class=""><a href="" title="">Rau củ</a></li>
-                            <li class=""><a href="" title="">Hoa Quả</a></li>
-                        </ul>
-                    </div>
+                    <h2 class="heading-1"><span>{{ $name }}</span></h2>
+                    @include('frontend.component.catalogue', ['category' => $widgets['category-high']])
                 </div>
             </div>
+
             <div class="panel-body">
                 <div class="uk-grid uk-grid-medium">
                     <div class="uk-width-large-1-4">
                         <div class="best-seller-banner">
-                            <a href="" class="image img-cover"><img src="frontend/resources/img/bestseller.png" alt=""></a>
-                            <div class="banner-title">Bring Natural<br> Into Your<br> Home</div>
+                            <a class="image img-cover"><img src="{{ $image }}" alt="{{  $image }}"></a>
+                            <div class="banner-title">
+                                {!! $description !!}
+                            </div>
                         </div>
                     </div>
                     <div class="uk-width-large-3-4">
+                        @if(!is_null($widgets['Best_Seler'] -> object))
                         <div class="product-wrapper">
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
-                                    <?php for($i = 0; $i < count($category); $i++){  ?>
+                                    @foreach($widgets['Best_Seler'] -> object as $key => $val)
                                     <div class="swiper-slide">
-                                        @include('frontend.component.product-item')
+                                        @include('frontend.component.product-item', ['product' => $val])
                                     </div>
-                                    <?php }  ?>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -140,7 +171,7 @@
                 <div class="uk-grid uk-grid-medium">
                     <?php for($i = 0; $i<=3; $i++){  ?>
                     <div class="uk-width-large-1-4">
-                        @include('frontend.component.deal')
+                        @include('frontend.component.product-item-2')
                     </div>
                     <?php }  ?>
                 </div>
