@@ -169,8 +169,9 @@ class BaseRepository implements BaseRepositoryInterface
             })->get();
     }
 
-    public function recursiveCategory(string $parameter = '', $table = '' ){
-        $table = $table.'_catalogues';
+    public function recursiveCategory(string $parameter = '', $table = '')
+    {
+        $table = $table . '_catalogues';
         $query = "
             WITH RECURSIVE category_tree AS (
                 SELECT id, parent_id, deleted_at
@@ -189,35 +190,51 @@ class BaseRepository implements BaseRepositoryInterface
         return $result;
     }
 
-    public function findObjectByCategoryIds($catId = [], $model, $language){
+    public function findObjectByCategoryIds($catId = [], $model, $language)
+    {
         $query = $this->model->newQuery();
-        $this -> model->select(
-            $model.'s.*',
+        $this->model->select(
+            $model . 's.*',
         )
-        ->where(
-            [config('apps.general.defaultPublish')]
-        )
-        ->with('languages', function($query) use ($language)
-        {
-            $query->where('language_id', $language);
-        })
-        ->with($model.'_catalogues',function($query) use ($language)
-        {
-            $query->with('languages',function($query) use ($language){
+            ->where(
+                [config('apps.general.defaultPublish')]
+            )
+            ->with('languages', function ($query) use ($language) {
                 $query->where('language_id', $language);
+            })
+            ->with($model . '_catalogues', function ($query) use ($language) {
+                $query->with('languages', function ($query) use ($language) {
+                    $query->where('language_id', $language);
+                });
             });
-        });
-        if($model == 'product')
-        {
+        if ($model == 'product') {
             $query->with('product_variants');
         }
-        $query->join($model.'_catalogue_'.$model.' as tb2', 'tb2.'.$model.'_id', '=', $model.'s.id')
-        ->whereIn('tb2.'.$model.'_catalogue_id', $catId)
-        ->orderBy('order','desc')
-        ->limit(8)
-        ->get()
+        $query->join($model . '_catalogue_' . $model . ' as tb2', 'tb2.' . $model . '_id', '=', $model . 's.id')
+            ->whereIn('tb2.' . $model . '_catalogue_id', $catId)
+            ->orderBy('order', 'desc')
+            ->limit(8)
+            ->get()
         ;
         return $query->get();
+    }
+
+    public function breadCrumb($model, $language)
+    {
+        return $this->findByCondition(
+            [
+                ['lft', '<=', $model->lft],
+                ['rgt', '>=', $model->rgt],
+                config('apps.general.defaultPublish'),
+            ],
+            true,
+            [
+                'languages' => function ($query) use ($language) {
+                    $query->where('language_id', '=', $language);
+                }
+            ],
+            ['lft', 'asc']
+        );
     }
 
 

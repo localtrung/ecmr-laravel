@@ -32,6 +32,7 @@ use App\Http\Controllers\Backend\CustomerCatalogueController;
 
 /*FRONT-END CONTROLLER*/
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\RouterController;
 
 //@@useController@@
 
@@ -48,7 +49,8 @@ use App\Http\Controllers\Frontend\HomeController;
 
 /* FROMTEND ROUTE */ 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
-
+Route::get('{canonical}'.config('apps.general.suffix'), [RouterController::class, 'index'])->name('router.index')->where('canonical', '[a-zA-Z0-9-]+');
+Route::get('{canonical}/trang-{page}'.config('apps.general.suffix'), [RouterController::class, 'page'])->name('router.page')->where('canonical', '[a-zA-Z0-9-]+')->where('page', '[0-9]+');
 /* BACKEND ROUTES */
 
 

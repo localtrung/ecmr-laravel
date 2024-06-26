@@ -7,8 +7,8 @@
                     <ul class="uk-list uk-clearfix uk-flex uk-flex-middle">
                         @foreach ($menu['site-link'] as $key => $val)
                         @php
-                        $name = $val['item']->languages->first()->pivot->name;
-                        $canonical = write_url($val['item']->languages->first()->pivot->canonical, true, true);
+                            $name = $val['item']->languages->first()->pivot->name;
+                            $canonical = write_url($val['item']->languages->first()->pivot->canonical, true, true);
                         @endphp
                         <li><a href="{{ $canonical }}" title="{{ $name }}">{{ $name }}</a></li>
                         @endforeach

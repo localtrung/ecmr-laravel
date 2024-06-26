@@ -1101,6 +1101,12 @@ html:not(.uk-touch) .uk-nav-offcanvas ul a:hover,
 .become-vendor i{
     margin-left:10px;
 }
+.become-vendor:hover
+{
+    background-color: var(--primary-color) !important;
+    color:#fff !important;
+    transition: linear;
+}
 .toolbox-item {
     margin-right: 20px;
 }
@@ -1821,7 +1827,7 @@ html:not(.uk-touch) .uk-nav-offcanvas ul a:hover,
 .ft-menu .heading{
     color:#000;
     margin-bottom:40px;
-    font-size:22px;
+    font-size:18px;
     font-weight:800;
     text-transform: uppercase;
 }
@@ -1831,8 +1837,8 @@ html:not(.uk-touch) .uk-nav-offcanvas ul a:hover,
 
 .ft-menu ul li > *{
     color:#000;
-    font-size:15px;
-    font-weight:600;
+    font-size:13px;
+    font-weight:400;
 }
 .ft-menu ul li > *:hover{
     color:var(--primary-color)
@@ -1881,6 +1887,11 @@ html:not(.uk-touch) .uk-nav-offcanvas ul a:hover,
     line-height:30px;
     text-align: center;
     border-radius: 50%;
+}
+
+.social-list a:hover{
+    position: relative;
+    top: -5px;
 }
 
 @media (max-width: 768px){
@@ -2217,6 +2228,7 @@ html:not(.uk-touch) .uk-nav-offcanvas ul a:hover,
 }
 .pagination li > *:hover{
     background: var(--primary-color);
+    color: #fff;
 }
 .pagination li.active > *{
     position: relative;
@@ -2267,6 +2279,9 @@ html:not(.uk-touch) .uk-nav-offcanvas ul a:hover,
     background: #fff;
     border:1px solid #d9d9d9;
     padding:5px 20px;
+}
+button{
+    cursor: pointer;
 }
 .panel-cart .nice-select{
     width:100% !important;

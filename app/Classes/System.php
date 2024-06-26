@@ -12,6 +12,7 @@ class system{
                 'brand' => ['type' => 'text', 'label' => 'Tên thương hiệu'],
                 'slogan' => ['type' => 'text', 'label' => 'Slogan'],
                 'logo' => ['type' => 'images', 'label' => 'Logo Website', 'tilte' => 'Click vào ô phía dưới để tải logo'],
+                'logo_footer' => ['type' => 'images', 'label' => 'Logo Footer website', 'tilte' => 'Click vào ô phía dưới để tải logo'],
                 'favicon' => ['type' => 'images', 'label' => 'Favicon','tilte' => 'Click vào ô phía dưới để tải favicon cho website'],
                 'copyright' => ['type' => 'text', 'label' => 'Copyright'],
                 'website' => ['type' => 'select', 'label' => 'Tình trạng website', 'option' => [
@@ -55,6 +56,17 @@ class system{
                 'meta_keyword' => ['type' => 'text', 'label' => 'Từ khóa SEO'],
                 'meta_description' => ['type' => 'text', 'label' => 'Mô tả SEO'],
                 'meta_images' => ['type' => 'images', 'label' => 'Ảnh SEO'],
+                ],
+
+            ];
+        $data['social'] =[
+            'label' => 'Cấu hình mạng xã hội  cho trang chủ',
+            'description' => 'Cài đặt đầy đủ thông tin mạng xã hội của website.
+                              Bao gồm Facebook, Instagram, vv...',
+            'value' => [
+                'facebook' => ['type' => 'text', 'label' => 'Facebook'],
+                'instagram' => ['type' => 'text', 'label' => 'Instagram'],
+                'twitter' => ['type' => 'text', 'label' => 'Twitter'],
                 ],
 
             ];

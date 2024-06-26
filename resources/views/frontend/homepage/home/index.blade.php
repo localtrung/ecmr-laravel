@@ -21,13 +21,13 @@
                         @foreach ($widgets['category']-> object as $key => $val)
                         @php
                         $name = $val->languages->first()->pivot->name;
-                        $canonical = write_url($val->languages->first()->pivot->canonical);
+                        $canonical = write_url($val->languages->first()->pivot->canonical, true, true);
                         $image = $val->image;
                         $productCount = ($val->products_count) ?? 0;
                         @endphp
                         <div class="swiper-slide">
                             <div class="category-item bg-<?php echo rand(1,7) ?>">
-                                <a href="{{ $image }}" class="image img-scaledown img-zoomin"><img src="{{ $image }}"
+                                <a href="{{ $canonical }}" class="image img-scaledown img-zoomin"><img src="{{ $image }}"
                                         alt="{{ $name }}"></a>
                                 <div class="title"><a href="{{ $canonical }}" title="{{ $name }}">{{ $name }}</a></div>
                                 <div class="total-product">{{ $productCount }} sản phẩm</div>
@@ -118,7 +118,7 @@
     @php
         $name = $widgets['Best_Seler']->name;
         $image = ($widgets['Best_Seler']->album[0]) ?? '' ;
-        $description = $widgets['Best_Seler']->description[$language];
+        $description = $widgets['Best_Seler']->description[$config['language']];
     @endphp
     <div class="panel-bestseller">
         <div class="uk-container uk-container-center">

@@ -13,7 +13,7 @@
     @if($price['percent'] > 0)
     <div class="badge badge-bg<?php echo rand(1,3) ?>">-{{ $price['percent'] }}%</div>
     @endif
-    <a href="{{ $canonical }}" class="image img-cover"><img src="{{ $image }}" alt="{{ $name }}"></a>
+    <a href="{{ $canonical }}" class="image img-scaledown img-zoomin img-cover"><img src="{{ $image }}" alt="{{ $name }}"></a>
     <div class="info">
         <div class="category-title"><a href="{{ $canonical }}" title = "{{ $name }}">{{ $catName }}</a></div>
         <h3 class="title"><a href="{{ $canonical }}" title="{{ $name }}">{{ $name }}</a></h3>

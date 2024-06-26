@@ -50,7 +50,7 @@ class ProductCatalogueService extends BaseService implements ProductCatalogueSer
             $this->paginateSelect(), 
             $condition, 
             $perPage,
-            ['path' => 'product.catalogue.index'],  
+            ['path' => 'product/catalogue/index'],  
             ['product_catalogues.lft', 'ASC'],
             [
                 ['product_catalogue_language as tb2','tb2.product_catalogue_id', '=' , 'product_catalogues.id']

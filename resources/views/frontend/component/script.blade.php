@@ -1,8 +1,16 @@
+@php
+    $coreJs =[
+        'frontend/resources/plugins/wow/dist/wow.min.js',
+        'frontend/resources/uikit/js/uikit.min.js',
+        'frontend/resources/uikit/js/components/sticky.min.js',
+        'frontend/resources/plugins/jquery-nice-select-1.1.0/js/jquery.nice-select.min.js',
+        'frontend/resources/function.js',
+    ]
+@endphp
 
-<script src="frontend/resources/plugins/wow/dist/wow.min.js"></script>
-<script src="frontend/resources/uikit/js/uikit.min.js"></script>
-<script src="frontend/resources/uikit/js/components/sticky.min.js"></script>
-<script src="frontend/resources/function.js"></script>
+@foreach($coreJs as $item)
+    <script src="{{ asset($item) }}"></script>
+@endforeach
 
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <div id="fb-root"></div>

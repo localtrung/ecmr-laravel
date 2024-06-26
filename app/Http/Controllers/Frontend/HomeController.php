@@ -46,20 +46,30 @@ class HomeController extends FrontendController
             $this->language
         );
         $slides = $this->slideService->getSlide([SlideEnum::BANNER, SlideEnum::MAIN_SLIDE], $this->language);
-        $language = $this -> language;
         $config = $this->config();
+        $system = $this->system;
+        $seo = [
+            'meta_title' => $system['seo_meta_title'],
+            'meta_keyword' => $system['seo_meta_keyword'],
+            'meta_description' => $system['seo_meta_description'],
+            'meta_image' => $system['seo_meta_images'],
+            'canonical' => config('app.url')
+        ];
         return view('frontend.homepage.home.index', compact(
             'config',
             'slides',
             'widgets',
-            'language',
+            'system',
+            'seo',
         )
         );
     }
 
     private function config()
     {
-        return [];
+        return [
+            'language' => $this->language
+        ];
     }
 
 

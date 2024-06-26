@@ -12,7 +12,8 @@ use App\Http\ViewComposer\SystemComposer;
 use App\Http\ViewComposer\MenuComposer;
 use App\Http\ViewComposer\LanguageComposer;
 use App\Models\Language;
-
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
 class AppServiceProvider extends ServiceProvider
 {
 
@@ -73,7 +74,7 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('frontend.homepage.layout', function ($view) use ($language) {
 
             $composerClass = [
-                SystemComposer::class,
+                // SystemComposer::class,
                 MenuComposer::class,
                 LanguageComposer::class,
             ];
